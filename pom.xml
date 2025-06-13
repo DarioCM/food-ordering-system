@@ -13,7 +13,6 @@
   <groupId>dev.dario.food.ordering.system</groupId>
   <artifactId>food-ordering-system</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>war</packaging>
 
   <packaging>pom</packaging>
   <modules>
@@ -42,7 +41,6 @@
         </configuration>
       </plugin>
     </plugins>
-    <finalName>food-ordering-system</finalName>
   </build>
 
 </project>
