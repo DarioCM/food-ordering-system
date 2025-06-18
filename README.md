@@ -55,9 +55,3 @@ This diagram illustrates how the order lifecycle is managed using the **Saga pat
 
 Each service maintains **ACID transactions** in its own database. Consistency is maintained **eventually**, not through distributed transactions.
 
-## 📈 Diagram
-
-Attach this diagram in the README:
-
-```md
-![Order State Saga Flow](relative/path/to/order-saga-diagram.jpeg)
