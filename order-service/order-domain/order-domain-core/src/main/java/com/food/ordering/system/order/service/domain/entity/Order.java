@@ -47,6 +47,50 @@ public class Order extends AggregateRoot<OrderId> {
     validateItemsPrice();
   }
 
+  /************ ORDER STATUS FLOW VALIDATION *****************/
+  public void paid(){
+    if (orderStatus != OrderStatus.PENDING) {
+      throw new OrderDomainException("Order is not in correct state fot pay operation");
+    }
+    orderStatus = OrderStatus.PAID;
+  }
+
+  public void  approve(){
+    if ( orderStatus != OrderStatus.PAID) {
+      throw new OrderDomainException( "Order is not in the correct state for approve operation");
+    }
+    orderStatus = OrderStatus.APPROVED;
+  }
+
+  public void initCancel(List<String> failureMessages){
+    if (orderStatus != OrderStatus.PAID) {
+      throw new OrderDomainException("Order is not in the correct state dor initCancel operation");
+    }
+    orderStatus = OrderStatus.CANCELLING;
+    updateFailureMessages(failureMessages);
+  }
+
+  public void cancel(List<String> failureMessages){
+    if (!(orderStatus == OrderStatus.CANCELLING || orderStatus == OrderStatus.PENDING)) {
+      throw new OrderDomainException("Order ia not in correct state for cancel operation");
+    }
+    orderStatus = OrderStatus.CANCELLED;
+    updateFailureMessages(failureMessages);
+  }
+
+  private void updateFailureMessages(List<String> failureMessages) {
+    if (this.failureMessages != null && failureMessages != null) {
+      this.failureMessages.addAll(failureMessages.stream().filter(
+          message -> !message.isEmpty()).toList());
+    }
+    if (this.failureMessages == null) {
+      this.failureMessages = failureMessages;
+    }
+  }
+
+
+  /*************************************************************/
+
   private void validateItemsPrice() {
     Money orderItemsTotal = items.stream().map(
         orderItem -> {
