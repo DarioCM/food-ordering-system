@@ -48,7 +48,7 @@ public class Order extends AggregateRoot<OrderId> {
   }
 
   /************ ORDER STATUS FLOW VALIDATION *****************/
-  public void paid(){
+  public void pay(){
     if (orderStatus != OrderStatus.PENDING) {
       throw new OrderDomainException("Order is not in correct state fot pay operation");
     }
